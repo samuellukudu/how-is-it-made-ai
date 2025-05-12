@@ -497,7 +497,7 @@ Your Fit: Leverages your ML/AI skills, nTop/Three.js interests, and ability to h
 Sample Code Snippets
 To kickstart development, here are simplified snippets for key steps (full code can be provided if needed):
 1. LLM API Call (GPT-4o for Image Description)
-python
+```python
 from openai import OpenAI
 client = OpenAI(api_key="your-api-key")
 
@@ -512,8 +512,9 @@ response = client.chat.completions.create(
 )
 description = response.choices[0].message.content
 print(description)  # E.g., "Cylindrical steel bracket, 10 cm long, 5 cm diameter, two 1 cm holes"
+```
 2. Image Generation (Stable Diffusion via Hugging Face)
-python
+```python
 from diffusers import StableDiffusionPipeline
 import torch
 
@@ -524,8 +525,9 @@ pipe = pipe.to("cuda" if torch.cuda.is_available() else "cpu")
 prompt = "3D rendering of a cylindrical steel bracket, 10 cm long, 5 cm diameter, two mounting holes"
 image = pipe(prompt).images[0]
 image.save("blueprint_render.png")
+```
 3. CAD Model (CadQuery)
-python
+```python
 import cadquery as cq
 
 # Create a cylindrical bracket with holes
@@ -536,8 +538,9 @@ result = (cq.Workplane("XY")
           .translate((0, 15, 0))
           .hole(10, depth=100))  # Second hole
 result.val().exportStl("bracket.stl")
+```
 4. FEA Mesh and Input (Gmsh + CalculiX)
-python
+```python
 import gmsh
 
 gmsh.initialize()
@@ -556,8 +559,9 @@ with open("bracket.inp", "w") as f:
     f.write("*BOUNDARY\n1, 1, 3, 0\n")  # Fix base
     f.write("*STEP\n*STATIC\n*CLOAD\n2, 2, -10000\n")  # Apply 10,000 N force
     f.write("*END STEP")
+```
 5. Streamlit App (Basic)
-python
+```python
 import streamlit as st
 from PIL import Image
 
@@ -571,6 +575,7 @@ if uploaded_file:
     st.image("stress_plot.png", caption="FEA Stress Plot")
     st.download_button("Download CAD", open("bracket.stl", "rb").read(), "bracket.stl")
     st.download_button("Download FEA Report", open("report.pdf", "rb").read(), "report.pdf")
+```
 InnovateX Registration
 Check Requirements: Visit Plug and Play China’s website or LinkedIn for InnovateX details (e.g., registration form, deadlines). Contact organizers if unclear (e.g., via email or LinkedIn).
 Submission:
