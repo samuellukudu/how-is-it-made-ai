@@ -234,8 +234,7 @@ Display the blueprint rendering and CAD model (Three.js).
 Generate a stress plot (manually via ParaView for MVP).
 Provide downloadable outputs (STL, PDF report).
 Code (visualize.py):
-```
-python
+```python
 import streamlit.components.v1 as components
 
 def display_3d_model(stl_path):
