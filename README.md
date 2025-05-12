@@ -80,13 +80,15 @@ Step 1: Set Up the Environment
 Objective: Create a Python environment with all dependencies.
 Process:
 Create a virtual environment:
-bash
+```bash
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
+```
 Install required libraries:
-bash
+```bash
 pip install openai diffusers torch cadquery gmsh streamlit opencv-python Pillow numpy
+```
 Install CalculiX:
 Download binaries from CalculiX’s website.
 Add to system PATH or specify the executable path in your code.
