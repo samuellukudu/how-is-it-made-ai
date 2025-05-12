@@ -99,7 +99,7 @@ Process:
 Use Streamlit to handle uploads.
 Preprocess with OpenCV (resize, normalize) for consistency.
 Code Example:
-python
+```python
 import streamlit as st
 import cv2
 from PIL import Image
@@ -114,13 +114,14 @@ if uploaded_file:
     image_norm = image_resized / 255.0
     cv2.imwrite("preprocessed_image.jpg", image_norm * 255)
     st.image(image_norm, caption="Preprocessed Image")
+```
 Step 3: Generate Image Description with LLM
 Objective: Use an LLM API to describe the component’s geometry and material.
 Process:
 Encode the image and send it to GPT-4o.
 Parse the response for key details.
 Code Example:
-python
+```python
 from openai import OpenAI
 import base64
 
@@ -139,13 +140,14 @@ response = client.chat.completions.create(
 )
 description = response.choices[0].message.content
 st.write("Component Description:", description)
+```
 Step 4: Visualize Blueprint with Image Generation
 Objective: Create a visual blueprint rendering.
 Process:
 Use Stable Diffusion with the LLM’s description as a prompt.
 Display the result in Streamlit.
 Code Example:
-python
+```python
 from diffusers import StableDiffusionPipeline
 import torch
 
@@ -157,13 +159,14 @@ prompt = f"3D rendering of {description}"
 image = pipe(prompt).images[0]
 image.save("blueprint_render.png")
 st.image("blueprint_render.png", caption="Blueprint Rendering")
+```
 Step 5: Script a CAD Model
 Objective: Generate a 3D model based on the description.
 Process:
 Parse the description manually or with regex (e.g., extract “cylinder”, “10 cm”, “steel”).
 Use CadQuery to script the model and export as STL.
 Code Example:
-python
+```python
 import cadquery as cq
 
 # Example: assume description parsing yields length=100, diameter=50, material="steel"
@@ -173,12 +176,13 @@ result = (cq.Workplane("XY")
           .faces(">Z").workplane()
           .hole(10, depth=length))  # Add a hole as an example feature
 result.val().exportStl("model.stl")
+```
 Step 6: Generate a Mesh
 Objective: Convert the STL model to a finite element mesh.
 Process:
 Use Gmsh to load the STL and create a tetrahedral mesh.
 Code Example:
-python
+```python
 import gmsh
 
 gmsh.initialize()
@@ -188,13 +192,14 @@ gmsh.model.occ.synchronize()
 gmsh.model.mesh.generate(3)  # 3D tetrahedral mesh
 gmsh.write("model.msh")
 gmsh.finalize()
+```
 Step 7: Prepare FEA Inputs
 Objective: Create a CalculiX input file with mesh, material, and boundary conditions.
 Process:
 Define material properties (e.g., steel).
 Set basic boundary conditions (e.g., fixed base, applied force).
 Code Example:
-python
+```python
 materials = {"steel": {"E": 200e9, "nu": 0.3}}  # Young’s modulus (Pa), Poisson’s ratio
 material = materials["steel"]
 with open("model.inp", "w") as f:
@@ -204,21 +209,23 @@ with open("model.inp", "w") as f:
     f.write("*BOUNDARY\n1, 1, 3, 0\n")  # Fix node 1 in all directions
     f.write("*STEP\n*STATIC\n*CLOAD\n2, 2, -10000\n")  # Apply 10 kN downward force
     f.write("*END STEP")
+```
 Step 8: Run the FEA Simulation
 Objective: Execute CalculiX to compute stresses and strains.
 Process:
 Call CalculiX via Python’s subprocess module.
 Code Example:
-python
+```python
 import subprocess
 subprocess.run(["ccx", "model"], check=True)  # Assumes ccx is in PATH
+```
 Step 9: Display Results
 Objective: Show the CAD model and FEA results in the web app.
 Process:
 Use Three.js for 3D model visualization.
 Generate a stress plot (e.g., via ParaView) and display as an image.
 Code Example:
-python
+```python
 from streamlit.components.v1 import html
 
 html("""
@@ -229,18 +236,20 @@ html("""
 </script>
 """, height=400)
 st.image("stress_plot.png", caption="FEA Stress Plot")  # Generate with ParaView or similar
+```
 Step 10: Add Error Handling and Feedback
 Objective: Ensure robustness and user-friendliness.
 Process:
 Wrap API calls and subprocesses in try-except blocks.
 Provide status updates in Streamlit.
 Code Example:
-python
+```python
 try:
     st.write("Processing image, please wait...")
     # API call or simulation
 except Exception as e:
     st.error(f"An error occurred: {str(e)}")
+```
 Making the App Excellent
 To stand out:
 Performance: Cache API results for demo images to reduce latency.
