@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Generation Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>FastAPI Image Generation</h1>
+  <section>
+    <h2>Text to Image</h2>
+    <textarea id="prompt" placeholder="Enter text prompt"></textarea>
+    <button id="generate">Generate</button>
+    <div id="results"></div>
+  </section>
+  <section>
+    <h2>Image with Text</h2>
+    <input type="file" id="inputImage" accept="image/*">
+    <input type="text" id="desc" placeholder="Enter description" />
+    <button id="generateWithImage">Generate with Image</button>
+    <div id="resultsImg"></div>
+  </section>
+  <script src="script.js"></script>
+</body>
+</html>
